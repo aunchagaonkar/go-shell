@@ -46,8 +46,7 @@ func main() {
 					continue
 				}
 				switch args[0] {
-				case "exit", "echo", "type":
-					{
+				case "exit", "echo", "type":{
 						fmt.Printf("%s is a shell builtin\n", args[0])
 						continue
 					}
@@ -77,28 +76,12 @@ func main() {
 		default:
 			{
 				// fmt.Printf("%s: command not found\n", cmd)
-				// run the executable
-				paths := strings.Split(os.Getenv("PATH"), ":")
-				f := false
-				for _, path := range paths {
-					fp := filepath.Join(path, cmd)
-					if _, err := os.Stat(fp); err == nil {
-						// fmt.Println(fp)
-						f = true
-						break
-					}
-				}
-				if !f {
-					fmt.Printf("%s: command not found\n", cmd)
-					continue
-				}
-				// fmt.Println("running the executable")
 				cmd := exec.Command(cmd, args...)
 				cmd.Stdout = os.Stdout
 				cmd.Stderr = os.Stderr
 				err := cmd.Run()
 				if err != nil {
-					fmt.Println(err)
+					fmt.Printf("%s: command not found\n", cmd)
 				}
 				continue
 			}
