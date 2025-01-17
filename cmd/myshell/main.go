@@ -27,8 +27,7 @@ func main() {
 		cmd := args[0]
 		args = args[1:]
 		switch cmd {
-		case "exit":
-			{
+		case "exit":{
 				if len(args) == 0 {
 					fmt.Printf("%s: command not found\n", command)
 					continue
@@ -39,19 +38,17 @@ func main() {
 				}
 				os.Exit(args)
 			}
-		case "type":
-			{
+		case "type":{
 				if len(args) == 0 {
 					fmt.Printf("%s: this command needs atleast 1 argument\n", cmd)
 					continue
 				}
 				switch args[0] {
-				case "exit", "echo", "type", "pwd":{
+				case "exit", "echo", "type", "pwd", "cd":{
 						fmt.Printf("%s is a shell builtin\n", args[0])
 						continue
 					}
-				default:
-					{
+				default:{
 						f := false
 						paths := strings.Split(os.Getenv("PATH"), ":")
 						for _, path := range paths {
@@ -68,13 +65,11 @@ func main() {
 					}
 				}
 			}
-		case "echo":
-			{
+		case "echo":{
 				fmt.Println(strings.Join(args, " "))
 				continue
 			}
-		default:
-			{
+		default:{
 				// fmt.Printf("%s: command not found\n", cmd)
 				cmd := exec.Command(cmd, args...)
 				cmd.Stdout = os.Stdout
@@ -86,7 +81,6 @@ func main() {
 				continue
 			}
 		}
-
 	}
 
 }
