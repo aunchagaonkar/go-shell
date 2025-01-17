@@ -76,7 +76,7 @@ func main() {
 					continue
 				}
 				fmt.Println(dir)
-				continue
+				continue;
 		}
 		default:{
 				// fmt.Printf("%s: command not found\n", cmd)
