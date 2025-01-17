@@ -69,6 +69,15 @@ func main() {
 				fmt.Println(strings.Join(args, " "))
 				continue
 			}
+		case "pwd":{
+				dir, err := os.Getwd()
+				if err != nil {
+					fmt.Println(err)
+					continue
+				}
+				fmt.Println(dir)
+				continue
+		}
 		default:{
 				// fmt.Printf("%s: command not found\n", cmd)
 				cmd := exec.Command(cmd, args...)
