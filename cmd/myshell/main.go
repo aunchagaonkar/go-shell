@@ -21,7 +21,8 @@ func main() {
 		}
 		command = strings.TrimSpace(command)
 		args := strings.Split(command, " ")
-		command = args[0]
+		command = args[0];
+		
 		args = args[1:]
 		if command == "exit" {
 			if args[0] == "0" {
