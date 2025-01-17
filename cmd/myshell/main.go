@@ -47,7 +47,7 @@ func main() {
 						continue
 					}
 					default:{
-						fmt.Printf("%s: command not found\n", args[0])
+						fmt.Printf("%s: not found\n", args[0])
 						continue
 					}
 				}
