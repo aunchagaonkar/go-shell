@@ -4,9 +4,10 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"strconv"
 	"strings"
-	"path/filepath"
 )
 
 // Ensures gofmt doesn't remove the "fmt" import in stage 1 (feel free to remove this!)
@@ -26,53 +27,83 @@ func main() {
 		cmd := args[0]
 		args = args[1:]
 		switch cmd {
-			case "exit":{
-				if (len(args) == 0){
+		case "exit":
+			{
+				if len(args) == 0 {
 					fmt.Printf("%s: command not found\n", command)
 					continue
 				}
-				args, err:= strconv.Atoi(args[0]);
-				if err!= nil {	
-					os.Exit(1);
+				args, err := strconv.Atoi(args[0])
+				if err != nil {
+					os.Exit(1)
 				}
-				os.Exit(args);
+				os.Exit(args)
 			}
-			case "type":{
-				if (len(args) == 0){
+		case "type":
+			{
+				if len(args) == 0 {
 					fmt.Printf("%s: this command needs atleast 1 argument\n", cmd)
 					continue
 				}
-				switch args[0]{
-					case "exit", "echo", "type":{
+				switch args[0] {
+				case "exit", "echo", "type":
+					{
 						fmt.Printf("%s is a shell builtin\n", args[0])
 						continue
 					}
-					default:{
-						f:= false;
+				default:
+					{
+						f := false
 						paths := strings.Split(os.Getenv("PATH"), ":")
 						for _, path := range paths {
 							fp := filepath.Join(path, args[0])
 							if _, err := os.Stat(fp); err == nil {
 								fmt.Println(fp)
-								f = true;
+								f = true
 							}
 						}
-						if !f{
+						if !f {
 							fmt.Printf("%s: not found\n", args[0])
 							continue
 						}
 					}
 				}
 			}
-			case "echo":{
-				fmt.Println(strings.Join(args, " "));
+		case "echo":
+			{
+				fmt.Println(strings.Join(args, " "))
 				continue
 			}
-			default:{
-				fmt.Printf("%s: command not found\n", cmd)
+		default:
+			{
+				// fmt.Printf("%s: command not found\n", cmd)
+				// run the executable
+				paths := strings.Split(os.Getenv("PATH"), ":")
+				f := false
+				for _, path := range paths {
+					fp := filepath.Join(path, cmd)
+					if _, err := os.Stat(fp); err == nil {
+						// fmt.Println(fp)
+						f = true
+						break
+					}
+				}
+				if !f {
+					fmt.Printf("%s: command not found\n", cmd)
+					continue
+				}
+				// fmt.Println("running the executable")
+				cmd := exec.Command(cmd, args...)
+				cmd.Stdout = os.Stdout
+				cmd.Stderr = os.Stderr
+				err := cmd.Run()
+				if err != nil {
+					fmt.Println(err)
+				}
+				continue
 			}
 		}
-		
+
 	}
 
 }
