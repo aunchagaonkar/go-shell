@@ -28,6 +28,10 @@ func main() {
 				return
 			}
 		}
+		if command == "echo" {
+			fmt.Println(strings.Join(args, " "))
+			continue
+		}
 		fmt.Printf("%s: command not found\n", command)
 	}
 
