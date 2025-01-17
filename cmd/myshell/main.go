@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"path/filepath"
 )
 
 // Ensures gofmt doesn't remove the "fmt" import in stage 1 (feel free to remove this!)
@@ -47,8 +48,19 @@ func main() {
 						continue
 					}
 					default:{
-						fmt.Printf("%s: not found\n", args[0])
-						continue
+						f:= false;
+						paths := strings.Split(os.Getenv("PATH"), ":")
+						for _, path := range paths {
+							fp := filepath.Join(path, args[0])
+							if _, err := os.Stat(fp); err == nil {
+								fmt.Println(fp)
+								f = true;
+							}
+						}
+						if !f{
+							fmt.Printf("%s: not found\n", args[0])
+							continue
+						}
 					}
 				}
 			}
