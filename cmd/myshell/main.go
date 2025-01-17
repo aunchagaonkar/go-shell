@@ -78,6 +78,18 @@ func main() {
 				fmt.Println(dir)
 				continue;
 		}
+		case "cd":{
+				if len(args) == 0 || args[0] == "~" {
+					os.Chdir(os.Getenv("HOME"))
+					continue
+				}
+				err := os.Chdir(args[0])
+				if err != nil {
+					fmt.Println(err)
+					continue
+				}
+				continue
+		}
 		default:{
 				// fmt.Printf("%s: command not found\n", cmd)
 				cmd := exec.Command(cmd, args...)
@@ -91,5 +103,4 @@ func main() {
 			}
 		}
 	}
-
 }
