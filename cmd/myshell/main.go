@@ -23,7 +23,7 @@ func main() {
 			fmt.Println(err)
 		}
 		command = strings.TrimSpace(command)
-		args := strings.Split(command, " ")
+		args := parse(command)
 		cmd := args[0]
 		args = args[1:]
 		switch cmd {
@@ -104,4 +104,32 @@ func main() {
 			}
 		}
 	}
+}
+
+func parse(input string) []string {
+    var args []string
+    var curr strings.Builder
+    flag := false
+
+    for i := 0; i < len(input); i++ {
+        ch := input[i]
+        switch ch {
+        case '\'':
+            flag = !flag
+        case ' ':
+            if flag {
+                curr.WriteByte(ch)
+            } else if curr.Len() > 0 {
+                args = append(args, curr.String())
+                curr.Reset()
+            }
+        default:
+            curr.WriteByte(ch)
+        }
+    }
+    if curr.Len() > 0 {
+        args = append(args, curr.String())
+    }
+
+    return args
 }
