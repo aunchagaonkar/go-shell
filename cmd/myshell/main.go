@@ -66,9 +66,10 @@ func main() {
 				}
 			}
 		case "echo":{
-				fmt.Println(strings.Join(args, " "))
-				continue
-			}
+			
+			fmt.Println(strings.Join(args, " "))
+			continue
+		}
 		case "pwd":{
 				dir, err := os.Getwd()
 				if err != nil {
